@@ -1,10 +1,14 @@
 # gitea-docker
 
-## Generate selfsigned cert
+## Generate selfsigned cert and install configuration file.
 
 You may create selfsigned cert first for using HTTPS.
 
+```
 ./gen-selfsigned-cert.sh
+```
+
+You can also use your cert file.
 
 ## Git service passthrough
 
