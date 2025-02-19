@@ -1,0 +1,53 @@
+services:
+  gitea-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123!@#
+      - POSTGRES_DB=gitea
+    networks:
+      - app_network
+    volumes:
+      - gitea-db:/var/lib/postgresql/data
+      
+  gitea:
+    image: gitea/gitea:latest
+    restart: always
+    environment:
+      - USER_UID=1001
+      - USER_GID=1001
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=gitea-db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=admin
+      - GITEA__database__PASSWD=admin123!@#
+    networks:
+      - app_network
+    ports:
+      - 127.0.0.1:2222:22
+    volumes:
+      - gitea:/data
+      - /home/git/.ssh:/data/git/.ssh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./templates:/etc/nginx/templates
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
+volumes:
+  gitea:
+    driver: local
+  gitea-db:
+    driver: local
