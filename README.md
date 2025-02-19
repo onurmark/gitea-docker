@@ -8,8 +8,10 @@ You may create selfsigned cert first for using HTTPS.
 
 ## Git service passthrough
 
+Create git user account.
+```
 sudo adduser git
-
+```
 Edit the git user's UID GID in docker-compose.yml
 
 You can use this command to show the UID and GID
